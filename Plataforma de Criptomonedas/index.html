@@ -7,15 +7,18 @@
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <div id="app">
+    <div id="app" v-bind:style="{ background: '#'+color}">
         <img
             v-on:mouseover="toggleShowPrices"
             v-on:mouseout="toggleShowPrices"
-            v-bind:src="img" v-bind:alt="name" style="width: 150px;">
+            v-bind:src="img" v-bind:alt="name" style="width: 150px;"
+        />
 
-        <h1>
+            <!-- Directiva v-bind:class -->
+            <h1 v-bind:class="changePercent > 0 ? 'green' : 'red' ">
+
             <!-- Expresion -->
-            {{ name }}
+            {{ title }}
 
             <!-- Directiva v-if -->
             <span v-if="changePercent > 0">👍</span>
@@ -27,19 +30,29 @@
             <span v-show="changePercent < 0">😒</span>
             <span v-show="changePercent === 0">✌</span>
 
-            <!-- Directiva v-for -->
-            <ul>
-                <li v-for="(price, index) in prices" v-bind:key="price">{{ index }} | {{ price }}</li>
-            </ul>            
-
-            <!-- Directiva v-on -->
-            <span v-on:click="toggleShowPrices">{{showPrices ? '🙈' : '👀' }}</span>
-            <ul v-show=showPrices>
-                <li v-for="(priceDay, index) in pricesWithDays" v-bind:key="priceDay.day">{{ priceDay.day }} | {{ priceDay.value }}</li>
-            </ul>
-
-
         </h1>
+
+           <!-- Directiva v-for -->
+           <ul>
+            <li v-for="(price, index) in prices" v-bind:key="price">{{ index }} | {{ price }}</li>
+        </ul>            
+
+        <!-- Directiva v-on -->
+        <span v-on:click="toggleShowPrices">{{showPrices ? '🙈' : '👀' }}</span>
+
+        <!-- Two-Way Data Binding -->
+        <input type="number" v-model="value">
+        <span>{{ convertedValue }}</span>
+
+        <ul v-show=showPrices>
+            <li 
+                class="uppercase"
+                v-for="(priceDay, index) in pricesWithDays" 
+                v-bind:key="priceDay.day"
+                v-bind:class="{ orange: priceDay.value === price, red:priceDay.value < price, green: priceDay.value > price }">                
+                {{ priceDay.day }} | {{ priceDay.value }}
+            </li>
+        </ul>
 
 
 
